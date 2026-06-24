@@ -7,16 +7,16 @@
 *   **Token-Based Authentication**: Secure session handling using JWT (JSON Web Tokens).
 *   **Error Handling**: Secure, generic error messages.
 *   **Token Expiration**: user token is expired after a certain time.
-*   
-* ## will add more features later
+*
+-- will add more features later --
 
-* ## Stack
+## Stack
 * **Backend:** [Node.js,Express.js]
 * **Database:** [MongoDB]
 * **Authentication:** [JWt (jsonwebtoken)]
 * **Styling:** [Tailwindcss]
 
-  ## Packages used:
+## Packages used:
   ```bcrypt jsonwebtoken dotenv mongoose etc.```
 
 * 
