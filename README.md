@@ -13,7 +13,7 @@
 ## Stack
 * **Backend:** [Node.js,Express.js]
 * **Database:** [MongoDB]
-* **Authentication:** [JWt (jsonwebtoken)]
+* **Authentication:** [JWT (jsonwebtoken)]
 * **Styling:** [Tailwindcss]
 
 ## Packages used:
