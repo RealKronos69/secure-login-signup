@@ -1,0 +1,80 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="flex justify-center items-center">
+    <div class="container flex justify-center items-center p-2 *:font-mono h-full">
+        <form class="form flex flex-col border-2 p-3 rounded-3xl items-center justify-center gap-10 w-96"
+            action="/login" method="POST">
+            <h1>login</h1>
+            <div class="inputarea gap-6 flex flex-col w-full p-5">
+                <input type="email" name="email" placeholder="email"
+                    class="email w-full p-2 border-b-2 focus:outline-0">
+                <input type="password" name="password" placeholder="password"
+                    class="pass w-full p-2 border-b-2 focus:outline-0">
+                <div>
+                    <span class="*:inline text-xs justify-between flex ">
+                        <p>don't have a account?</p>
+                        <a href="http://localhost:3000/signup">SignUp</a>
+                    </span>
+                    <a href="">forgot password?</a>
+                </div>
+
+            </div>
+            <button type="submit"
+                class="h-10 w-full border-2 rounded-b-2xl cursor-pointer hover:scale-101">Login</button>
+        </form>
+    </div>
+    <div class="msg fixed border-3 p-2 rounded-2xl font-semibold font-mono right-3 bottom-3 invisible"></div>
+
+    <script>
+        document.querySelector(".form").addEventListener('submit', async (e) => {
+            e.preventDefault()
+            const msg = document.querySelector(".msg")
+            if (document.querySelector(".email").value === "" || document.querySelector(".pass").value === "") {
+                return;
+            }
+            const formdata = {
+                email: document.querySelector(".email").value,
+                password: document.querySelector(".pass").value
+            }
+
+            const response = await fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formdata)
+            })
+            const data = await response.json()
+            // console.log(data)
+            if (response.ok) {
+                msg.classList.add("visible", "text-green-500")
+                msg.textContent = data.message
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-green-500")
+                }, 2000);
+                // console.log('login :', data.token)
+                localStorage.setItem('usertoken', data.token)
+                setTimeout(() => {
+                    window.location.href = '/user/dashboard'
+                }, 3000)
+
+            } else {
+                msg.classList.add("visible", "text-red-500")
+                msg.textContent = data.message
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-red-500")
+                }, 2000);
+            }
+
+        })
+    </script>
+</body>
+
+</html>

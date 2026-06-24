@@ -1,0 +1,97 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignUp Page</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body class="flex justify-center items-center">
+    <div class="container flex justify-center items-center p-2 *:font-mono h-full">
+        <form class="form flex flex-col border-2 p-3 rounded-3xl items-center justify-center gap-10 w-96">
+            <h1>SignUp</h1>
+            <div class="inputarea gap-4 flex flex-col w-full">
+                <input type="text" name="name" placeholder="name"
+                    class="signupname w-full p-2 border-b-2 focus:outline-0">
+                <input type="email" name="email" placeholder="email"
+                    class="signupemail w-full p-2 border-b-2 focus:outline-0">
+                <input type="password" name="password" placeholder="create password"
+                    class="signuppass w-full p-2 border-b-2 focus:outline-0">
+                <div class="flex-col flex">
+                    <input type="password" name="cpassword" placeholder="confirm password"
+                        class="signupcpass w-full p-2 border-b-2 focus:outline-0">
+                    <span class="*:inline text-xs justify-between flex ">
+                        <p>already have a account?</p>
+                        <a href="http://localhost:3000/login">login</a>
+                    </span>
+                </div>
+            </div>
+            <button type="submit"
+                class="submit h-10 w-full border-2 rounded-b-2xl cursor-pointer hover:scale-101">SignUp</button>
+        </form>
+    </div>
+    <div class="msg fixed border-3 p-2 rounded-2xl font-semibold font-mono right-3 bottom-3 invisible"></div>
+    <script>
+
+        document.querySelector(".form").addEventListener('submit', async (e) => {
+            e.preventDefault()
+            let msg = document.querySelector(".msg")
+
+            if (document.querySelector('.signuppass').value != document.querySelector('.signupcpass').value) {
+                msg.classList.add("visible", "text-red-500")
+                msg.textContent = "PASSWORD DIDN'T MATCH"
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-red-500")
+                }, 2000);
+                return;
+            }
+            if ((document.querySelector(".signuppass").value === "" && document.querySelector(".signupcpass").value === "") && (document.querySelector('.signupname').value != "" && document.querySelector('.signupemail').value != "")) {
+                msg.classList.add("visible", "text-red-500")
+                msg.textContent = "CREATE A PASSWORD!"
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-red-500")
+                }, 2000);
+                return;
+            }
+            const userData = {
+                name: document.querySelector('.signupname').value,
+                email: document.querySelector('.signupemail').value,
+                password: document.querySelector('.signuppass').value
+            }
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            })
+            const data = await response.json()
+
+
+            if (response.ok) {
+                msg.classList.add("visible", "text-green-500")
+                msg.textContent = data.message
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-green-500")
+                }, 2000);
+                setTimeout(() => {
+                    window.location.href = "/login"
+                }, 1000)
+            } else {
+                msg.classList.add("visible", "text-red-500")
+                msg.textContent = data.message
+                setTimeout(() => {
+                    msg.classList.remove("visible", "text-red-500")
+                }, 2000);
+
+
+            }
+
+        })
+
+
+    </script>
+</body>
+
+</html>

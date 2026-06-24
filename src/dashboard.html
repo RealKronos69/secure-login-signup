@@ -1,0 +1,64 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>user dashboard</title>
+    <link rel="stylesheet" href="/output.css">
+</head>
+
+<body>
+    <header class="bg-gray-400 flex font-mono font-semibold justify-between p-2">
+        <nav class="bg-red p-2">
+            <ul class="list-none text-white flex gap-5 *:hover:text-gray-300 *:cursor-pointer">
+                <li>home</li>
+                <li>report</li>
+                <li>posts</li>
+            </ul>
+        </nav>
+        <button
+            class="logout bg-gray-900 text-white rounded-2xl p-2 cursor-pointer text-sm hover:bg-gray-800">logout</button>
+    </header>
+    <section class="flex justify-center items-center h-full">
+        <div class="msg text-5xl font-extrabold font-mono text-gray-700"></div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = localStorage.getItem('usertoken')
+
+            if (!token) {
+                alert('u are logged out')
+                return
+            }
+            const response = await fetch('/user/dashboard-data', {
+                method: 'GET',
+                headers: {
+                    'Auth': `authx ${token}`,
+                }
+            })
+
+            if (response.status === 401 || response.status === 402) {
+                localStorage.removeItem('usertoken')
+                alert('login again session expired!')
+                return
+            }
+            const data = await response.json()
+            console.log(data)
+            if (response.ok) {
+                document.querySelector('.msg').textContent = data.message
+                
+            }
+
+            const logout = document.querySelector('.logout')
+            logout.addEventListener('click',()=>{
+                localStorage.removeItem('usertoken')
+                window.location.reload()
+            })
+
+
+        })
+    </script>
+</body>
+
+</html>
